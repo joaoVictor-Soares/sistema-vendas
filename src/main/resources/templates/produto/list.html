@@ -1,11 +1,47 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Listagem de Clientes</title>
+    <title>Listagem de Produtos</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
+
+<!-- Barra de navegação com controlo visual de perfis (ADMIN / PADRAO) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/pedidos}">Sistema Vendas</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- Apenas ADMIN gere clientes -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/clientes}">Clientes</a>
+                </li>
+                <!-- Apenas ADMIN gere produtos -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link active" th:href="@{/produtos}">Produtos</a>
+                </li>
+                <!-- ADMIN e PADRAO gerem pedidos -->
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'PADRAO')">
+                    <a class="nav-link" th:href="@{/pedidos}">Pedidos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-danger fw-bold" th:href="@{/logout}">
+                        <i class="bi bi-box-arrow-right"></i> Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container mt-4">
     <h1>Produtos</h1>
     <a class="btn btn-primary mb-3" th:href="@{/produtos/novo}">Novo Produto</a>
